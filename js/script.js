@@ -40,7 +40,39 @@ function loadData() {
         $nytHeaderElem.text('New York Times Article Could Not Be Loaded.');
         $('#wikipedia-header').text('');
     });
-
+    
+    //for error handling
+    var wikiRequestTimeout = setTimeout(function(){
+        $wikiElem.text('failed to get wikipedia resources');   
+    }, 8000);
+    
+    //AJAX's JSONP request for wiki api
+    $.ajax("https://en.wikipedia.org/w/api.php", {
+     
+        // Tell jQuery we're expecting JSONP
+        dataType: "jsonp",
+     
+        // Tell wiki api what we want and that we want JSON
+        data: {
+            format: "json",
+            action: "opensearch",
+            search: city
+        },
+     
+        // Work with the response
+        success: function( data ) {
+            articleList = data[1];
+            for (var i = 0; i<articleList.length; i++){
+                var liStr = '<li><a href="http://en.wikipedia.org/wiki/' + articleList[i] + '">' + articleList[i] +
+                '</a></li>';
+                $wikiElem.append(liStr);    
+            }
+            
+            //no need for timeout because request a success
+            clearTimeout(wikiRequestTimeout);
+        }
+    });
+    
     return false;
 };
 
