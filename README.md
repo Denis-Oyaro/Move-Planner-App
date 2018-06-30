@@ -1,4 +1,4 @@
-# Movie-Planner-App
+# Move-Planner-App
 A web application that takes as input from a user the street address and city of any location, and displays:
 * Google streetView of the address.
 * Recent New York times articles about the city.
